@@ -42,7 +42,7 @@ To run this project, you will need to add this variable to your .env file
 ```
   /denoise
 ```
-#### Returns your with all above methods applied
+#### Returns your photo with all above methods applied
 
 ```
   /full {factor}
