@@ -1,0 +1,5 @@
+.env
+venv
+src/*/__pycache__
+.vscode
+results/*
