@@ -55,7 +55,7 @@ To run this project, you will need to add this variable to your .env file
 
 ## Goal
 
-Providing a free of charge upsampling and image enhancement in general for whoever wants
+Provide a free of charge upsampling and image enhancement in general for whoever wants
 
 
 
