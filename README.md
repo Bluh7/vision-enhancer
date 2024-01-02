@@ -53,6 +53,10 @@ To run this project, you will need to add this variable to your .env file
 | `factor` | `string` | **Optional**. The scale factor that you want to upsample your image (min: 2, max: 4, default: 4) |
 
 
+## Goal
+
+Provide a free of charge upsampling and image enhancement in general for whoever wants
+
 
 
 
