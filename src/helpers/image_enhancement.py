@@ -17,22 +17,22 @@ class ImageEnhancement:
         return f"ImageEnhancement(image={self.image}, ml_models={self.ml_models})"
 
     async def full_enhance(self, scale_factor: int = 4) -> None:
-        await self.__async_upsample(scale_factor)
-        await self.__async_sharpen()
-        await self.__async_denoise()
+        await self.__async_process(self.__upsample, scale_factor)
+        await self.__async_process(self.__sharpen)
+        await self.__async_process(self.__denoise)
         self.__save_enhanced_image()
 
     async def upsample_enhance(self, scale_factor: int = 4) -> None:
-        await self.__async_upsample(scale_factor)
+        await self.__async_process(self.__upsample, scale_factor)
         self.__save_enhanced_image()
 
     async def denoise_enhance(self) -> None:
-        await self.__async_denoise()
+        await self.__async_process(self.__denoise)
         self.__save_enhanced_image()
 
     async def sharpen_enhance(self) -> None:
-        await self.__async_sharpen()
-        await self.__async_denoise()
+        await self.__async_process(self.__sharpen)
+        await self.__async_process(self.__denoise)
         self.__save_enhanced_image()
 
     def __upsample(self, scale_factor) -> None:
@@ -55,20 +55,10 @@ class ImageEnhancement:
         kernel = np.array([[0, -1, 0], [-1, 5, -1], [0, -1, 0]], np.float32)
         self.image = cv2.filter2D(self.image, -1, kernel)
 
-    async def __async_upsample(self, scale_factor: int = 4) -> None:
+    async def __async_process(self, func, *args) -> None:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             loop = asyncio.get_event_loop()
-            await loop.run_in_executor(executor, self.__upsample, scale_factor)
-
-    async def __async_denoise(self) -> None:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(executor, self.__denoise)
-
-    async def __async_sharpen(self) -> None:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            loop = asyncio.get_event_loop()
-            await loop.run_in_executor(executor, self.__sharpen)
+            await loop.run_in_executor(executor, func, *args)
 
     def __save_enhanced_image(self) -> None:
         filename = f"{self.author_id}.png"
